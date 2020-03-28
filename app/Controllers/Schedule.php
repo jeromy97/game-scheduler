@@ -1,10 +1,10 @@
 <?php namespace App\Controllers;
 
-class Home extends BaseController
+class Schedule extends BaseController
 {
-	public function index()
+	public function create()
 	{
-		return view('welcome_message');
+		return view('pages/schedule_create');
 	}
 
 	//--------------------------------------------------------------------
