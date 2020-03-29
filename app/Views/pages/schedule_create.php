@@ -17,43 +17,68 @@ include APPPATH . 'Views/header.php';
 		</div>
 		<div class="form-group col-md-6">
 			<label for="to_date">To: <small>*</small></label>
-			<input type="date" class="form-control" id="to_date" name="to_date" value="<?= date('Y-m-d', strtotime('now + 6 months')) ?>" required>
+			<input type="date" class="form-control" id="to_date" name="to_date" value="<?= date('Y-m-d', strtotime('now + 65 months')) ?>" required>
 		</div>
 	</div>
-	<div class="form-row">
-		<div class="form-group col-md-6">
-			<label for="name_col_1">Name timescheme 1:</label>
-			<input type="text" name="name_col_1" id="name_col_1" class="form-control" value="Youth" list="colum_names">
-		</div>
-		<div class="form-group col-md-3">
-			<label for="time_from_col_1">From:</label>
-			<input type="time" name="time_from_col_1" id="time_from_col_1" class="form-control" value="17:00">
-		</div>
-		<div class="form-group col-md-3">
-			<label for="time_to_col_1">To:</label>
-			<input type="time" name="time_to_col_1" id="time_to_col_1" class="form-control" value="19:15">
-		</div>
-	</div>
-	<div class="form-row">
-		<div class="form-group col-md-6">
-			<label for="name_col_2">Name timescheme 2:</label>
-			<input type="text" name="name_col_2" id="name_col_2" class="form-control" value="Seniors" list="colum_names">
-		</div>
-		<div class="form-group col-md-3">
-			<label for="time_from_col_2">From:</label>
-			<input type="time" name="time_from_col_2" id="time_from_col_2" class="form-control" value="19:15">
-		</div>
-		<div class="form-group col-md-3">
-			<label for="time_to_col_2">to:</label>
-			<input type="time" name="time_to_col_2" id="time_to_col_2" class="form-control" value="22:00">
-		</div>
+	<div class="table-responsive">
+		<table class="table table-striped" id="timeColumnTable">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Timescheme name <small>*</small></th>
+					<th>From <small>*</small></th>
+					<th>To <small>*</small></th>
+					<th class="text-right">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="timeSchemeRow1">
+					<td>1</td>
+					<td>
+						<div class="form-group">
+							<input type="text" name="name_col_1" id="name_col_1" class="form-control" list="colum_names" required>
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<input type="time" name="time_from_col_1" id="time_from_col_1" class="form-control" required>
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<input type="time" name="time_to_col_1" id="time_to_col_1" class="form-control" required>
+						</div>
+					</td>
+					<td class="text-right">
+						<button type="button" class="btn btn-danger" onclick="deleteTimeSchemeRow(1)">
+							<i class="fas fa-times"></i>
+						</button>
+						<input type="hidden" name="timeSchemeNum[]" value="1">
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td class="text-right">
+						<button type="button" class="btn btn-success" onclick="addTimeColumnRow()">
+							<i class="fas fa-plus"></i>
+						</button>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
 	</div>
 	<div class="mb-3">
 		<button type="button" class="btn btn-primary" onclick="generateScheme()">Load</button>
+		<?php // TODO: Manage this in database. ?>
 		<datalist id="colum_names">
+			<option value="Pupils">
 			<option value="Youth">
 			<option value="Seniors">
-			<option value="Novos">
 		</datalist>
 	</div>
 	
@@ -65,23 +90,44 @@ include APPPATH . 'Views/header.php';
 	
 	var input_from_date;
 	var input_to_date;
-	var input_name_col_1;
-	var input_time_from_col_1;
-	var input_time_to_col_1;
-	var input_name_col_2;
-	var input_time_from_col_2;
-	var input_time_to_col_2;
-	var row = 1;
+	var rowNumTC = 2;
+	var rowNumS = 1;
+	var timeColumnRows;
+	
+	function addTimeColumnRow() {
+		var html = '<tr id="timeSchemeRow' + rowNumTC + '">';
+		html += '<td>' + rowNumTC + '</td>';
+		html += '<td>';
+		html += '<div class="form-group">';
+		html += '<input type="text" name="name_col_' + rowNumTC + '" id="name_col_' + rowNumTC + '" class="form-control" list="colum_names" required>';
+		html += '</div>';
+		html += '</td>';
+		html += '<td>';
+		html += '<div class="form-group">';
+		html += '<input type="time" name="time_from_col_' + rowNumTC + '" id="time_from_col_' + rowNumTC + '" class="form-control" required>';
+		html += '</div>';
+		html += '</td>';
+		html += '<td>';
+		html += '<div class="form-group">';
+		html += '<input type="time" name="time_to_col_' + rowNumTC + '" id="time_to_col_' + rowNumTC + '" class="form-control" required>';
+		html += '</div>';
+		html += '</td>';
+		html += '<td class="text-right">';
+		html += '<button type="button" class="btn btn-danger" onclick="deleteTimeSchemeRow(' + rowNumTC + ')">';
+		html += '<i class="fas fa-times"></i>';
+		html += '</button>';
+		html += '<input type="hidden" name="timeSchemeNum[]" value="' + rowNumTC + '">';
+		html += '</td>';
+		html += '</tr>';
+		
+		$('#timeColumnTable tbody').append(html);
+		
+		rowNumTC++;
+	}
 	
 	function generateScheme() {
 		input_from_date = $('#from_date').val();
 		input_to_date = $('#to_date').val();
-		input_name_col_1 = $('#name_col_1').val();
-		input_time_from_col_1 = $('#time_from_col_1').val();
-		input_time_to_col_1 = $('#time_to_col_1').val();
-		input_name_col_2 = $('#name_col_2').val();
-		input_time_from_col_2 = $('#time_from_col_2').val();
-		input_time_to_col_2 = $('#time_to_col_2').val();
 		
 		if (!input_from_date || !input_to_date) {
 			alert('Please enter a valid date range.');
@@ -90,16 +136,36 @@ include APPPATH . 'Views/header.php';
 			var from_date = new Date(input_from_date);
 			var to_date = new Date(input_to_date);
 			
-			var html_scheme = '<div class="table-responsive"><table class="table table-striped w-100"><thead><tr><th>#</th><th>Date <small>*</small></th><th>' + input_name_col_1 + '</th><th>' + input_name_col_2 + '</th><th>Note</th><th>Actions</th></tr></thead><tbody>';
-			html_scheme += '</tbody></table></div>';
+			timeColumnRows = $('#timeColumnTable tbody tr');
+			
+			var html_scheme = '<div class="table-responsive">';
+			html_scheme += '<table class="table table-striped w-100">';
+			html_scheme += '<thead>';
+			html_scheme += '<tr>';
+			html_scheme += '<th>#</th>';
+			html_scheme += '<th>Date <small>*</small></th>';
+			timeColumnRows.each(function(index){
+				var rowNum = $(this).find('input[name="timeSchemeNum[]"]').val();
+				var colName = $(this).find('input#name_col_' + rowNum).val();
+				
+				html_scheme += '<th>' + colName + '</th>';
+			});
+			html_scheme += '<th>Note</th>';
+			html_scheme += '<th>Actions</th>';
+			html_scheme += '</tr>';
+			html_scheme += '</thead>';
+			html_scheme += '<tbody>';
+			html_scheme += '</tbody>';
+			html_scheme += '</table>';
+			html_scheme += '</div>';
 			html_scheme += '<div class="mb-3"><input type="submit" value="Save" class="btn btn-success"></div>';
 			
 			$('#scheme').html(html_scheme);
 			
-			row = 1;
+			rowNumS = 1;
 			
 			for ( i = from_date; i <= to_date; i.setDate(i.getDate() + 7) ) {
-				addRow(row - 1, i);
+				addSchemeRow(rowNumS - 1, i);
 			}
 			
 			location.href = '#scheme';
@@ -111,11 +177,11 @@ include APPPATH . 'Views/header.php';
 		$('input[name="time_to' + rowNum + '_' + col + '"]').val('');
 	}
 	
-	function deleteRow(rowNum) {
+	function deleteSchemeRow(rowNum) {
 		$("#schemeRow" + rowNum).remove();
 	}
 	
-	function addRow(rowNum, date = '') {
+	function addSchemeRow(rowNum, date = '') {
 		
 		var dateFormatted = '';
 		
@@ -123,13 +189,30 @@ include APPPATH . 'Views/header.php';
 			dateFormatted = date.getFullYear().toString() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2);
 		}
 		
-		html_scheme = '<tr id="schemeRow' + row + '">';
-		html_scheme += '<td>' + row + '</td>';
-		html_scheme += '<td><div class="form-group"><input class="form-control form-control-sm" type="date" name="date' + row + '" value="' + dateFormatted + '" required></div></td>';
-		html_scheme += '<td><div class="form-row"><div class="col-auto"><input class="form-control form-control-sm" type="time" name="time_from' + row + '_1" value="' + input_time_from_col_1 + '" ></div><div class="col-auto"><input class="form-control form-control-sm" type="time" name="time_to' + row + '_1" value="' + input_time_to_col_1 + '" ></div><div class="col-auto"><button type="button" class="btn btn-sm btn-outline-danger" onclick="clearTime(' + row + ', 1)"><i class="fas fa-trash"></i></button></div></div></td>';
-		html_scheme += '<td><div class="form-row"><div class="col-auto"><input class="form-control form-control-sm" type="time" name="time_from' + row + '_2" value="' + input_time_from_col_2 + '" ></div><div class="col-auto"><input class="form-control form-control-sm" type="time" name="time_to' + row + '_2" value="' + input_time_to_col_2 + '" ></div><div class="col-auto"><button type="button" class="btn btn-sm btn-outline-danger" onclick="clearTime(' + row + ', 2)"><i class="fas fa-trash"></i></button></div></div></td>';
-		html_scheme += '<td><div class="form-group"><input class="form-control form-control-sm" name="note' + row + '"></div><input type="hidden" name="rows[]" value="' + row + '"></td>';
-		html_scheme += '<td><div class="btn-group" role="group" aria-label="actions"><button type="button" class="btn btn-sm btn-danger" onclick="deleteRow(' + row + ')"><i class="fas fa-times"></i></button><button type="button" class="btn btn-sm btn-success" onclick="addRow(' + row + ')"><i class="fas fa-plus"></i></button></div></td>';
+		html_scheme = '<tr id="schemeRow' + rowNumS + '">';
+		html_scheme += '<td>' + rowNumS + '</td>';
+		html_scheme += '<td><div class="form-group"><input class="form-control form-control-sm" type="date" name="date' + rowNumS + '" value="' + dateFormatted + '" required></div></td>';
+		timeColumnRows.each(function(index){
+			var rowNumberColumnScheme = $(this).find('input[name="timeSchemeNum[]"]').val();
+			var colTimeFrom = $(this).find('input#time_from_col_' + rowNumberColumnScheme).val();
+			var colTimeTo = $(this).find('input#time_to_col_' + rowNumberColumnScheme).val();
+			
+			html_scheme += '<td>';
+			html_scheme += '<div class="form-row">';
+			html_scheme += '<div class="col-auto">';
+			html_scheme += '<input class="form-control form-control-sm" type="time" name="time_from' + rowNumS + '_' + rowNumberColumnScheme + '" value="' + colTimeFrom + '" >';
+			html_scheme += '</div>';
+			html_scheme += '<div class="col-auto">';
+			html_scheme += '<input class="form-control form-control-sm" type="time" name="time_to' + rowNumS + '_' + rowNumberColumnScheme + '" value="' + colTimeTo + '" >';
+			html_scheme += '</div>';
+			html_scheme += '<div class="col-auto">';
+			html_scheme += '<button type="button" class="btn btn-sm btn-outline-danger" onclick="clearTime(' + rowNumS + ', ' + rowNumberColumnScheme + ')"><i class="fas fa-trash"></i></button>';
+			html_scheme += '</div>';
+			html_scheme += '</div>';
+			html_scheme += '</td>';
+		});
+		html_scheme += '<td><div class="form-group"><input class="form-control form-control-sm" name="note' + rowNumS + '"></div><input type="hidden" name="rows[]" value="' + rowNumS + '"></td>';
+		html_scheme += '<td><div class="btn-group" role="group" aria-label="actions"><button type="button" class="btn btn-sm btn-danger" onclick="deleteSchemeRow(' + rowNumS + ')"><i class="fas fa-times"></i></button><button type="button" class="btn btn-sm btn-success" onclick="addSchemeRow(' + rowNumS + ')"><i class="fas fa-plus"></i></button></div></td>';
 		html_scheme += '</tr>';
 		
 		var table_rows = $("#scheme table tbody tr");
@@ -141,7 +224,7 @@ include APPPATH . 'Views/header.php';
 			$("#scheme table tr#schemeRow" + rowNum).after(html_scheme);
 		}
 		
-		row++;
+		rowNumS++;
 	}
 	
 </script>
