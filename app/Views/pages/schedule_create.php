@@ -198,14 +198,10 @@ include APPPATH . 'Views/header.php';
 			var colTimeTo = $(this).find('input#time_to_col_' + rowNumberColumnScheme).val();
 			
 			html_scheme += '<td>';
-			html_scheme += '<div class="form-row">';
-			html_scheme += '<div class="col-auto">';
+			html_scheme += '<div class="input-group">';
 			html_scheme += '<input class="form-control form-control-sm" type="time" name="time_from' + rowNumS + '_' + rowNumberColumnScheme + '" value="' + colTimeFrom + '" >';
-			html_scheme += '</div>';
-			html_scheme += '<div class="col-auto">';
 			html_scheme += '<input class="form-control form-control-sm" type="time" name="time_to' + rowNumS + '_' + rowNumberColumnScheme + '" value="' + colTimeTo + '" >';
-			html_scheme += '</div>';
-			html_scheme += '<div class="col-auto">';
+			html_scheme += '<div class="input-group-append">';
 			html_scheme += '<button type="button" class="btn btn-sm btn-outline-danger" onclick="clearTime(' + rowNumS + ', ' + rowNumberColumnScheme + ')"><i class="fas fa-trash"></i></button>';
 			html_scheme += '</div>';
 			html_scheme += '</div>';
