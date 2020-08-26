@@ -17,7 +17,7 @@ include APPPATH . 'Views/header.php';
 		</div>
 		<div class="form-group col-md-6">
 			<label for="to_date">To: <small>*</small></label>
-			<input type="date" class="form-control" id="to_date" name="to_date" value="<?= date('Y-m-d', strtotime('now + 65 months')) ?>" required>
+			<input type="date" class="form-control" id="to_date" name="to_date" value="<?= date('Y-m-d', strtotime('now + 1 year')) ?>" required>
 		</div>
 	</div>
 	<div class="table-responsive">
