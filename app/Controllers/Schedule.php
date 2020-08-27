@@ -18,6 +18,8 @@ class Schedule extends BaseController
 		$this->timeSchemeModel = new TimeSchemeModel();
 		$this->timeSchemeRowModel = new TimeSchemeRowModel();
 		$this->timeSchemeColumnModel = new TimeSchemeColumnModel();
+		
+		helper('scheme');
 	}
 	
 	public function index()
@@ -80,5 +82,41 @@ class Schedule extends BaseController
 		}
 		
 		return view('pages/schedule/create');
+	}
+	
+	public function export()
+	{
+		$schemeId = $this->request->uri->getSegment(3);
+		$exportMethod = $this->request->uri->getSegment(4);
+		
+		$scheme = $this->schemeModel->getScheme($schemeId);
+		
+		if ($scheme == null) {
+			die('Error: This scheme does not exist.');
+		}
+		
+		if ($exportMethod === '') {
+			$exportMethod = 'html';
+		}
+		
+		switch ($exportMethod) {
+			case 'html':
+				$data['timeSchemes'] = $this->timeSchemeModel->getTimeSchemes($schemeId);
+				$data['timeSchemeRows'] = $this->timeSchemeRowModel->getTimeSchemeRows($schemeId);
+				
+				$export = view('exports/schedule/html', $data);
+				
+				unset($data);
+				
+				$data['export'] = $export;
+				
+				return view('pages/schedule/export', $data);
+				
+				break;
+			
+			default:
+				die('Error: The desired export method does not exist.');
+				break;
+		}
 	}
 }

@@ -31,3 +31,5 @@ include APPPATH . 'Views/header.php';
 		<?php endforeach ?>
 	</tbody>
 </table>
+
+<?php include APPPATH . '/Views/footer.php'; ?>
