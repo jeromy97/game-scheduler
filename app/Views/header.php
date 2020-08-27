@@ -15,13 +15,11 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	
 	<!-- Font Awesome -->
-	<link rel="stylesheet" type="text/css" href="assets\fontawesome-free-5.12.1-web\css\all.min.css">
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>\assets\fontawesome-free-5.12.1-web\css\all.min.css">
+	
+	<script type="text/javascript" src="<?= base_url('assets/js/site.js') ?>"></script>
 
 	<title><?= esc(TITLE) ?> - Game Scheme Generator</title>
-	
-	<style type="text/css">
-		
-	</style>
 	
 </head>
 <body>

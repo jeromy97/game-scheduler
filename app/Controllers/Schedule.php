@@ -20,6 +20,13 @@ class Schedule extends BaseController
 		$this->timeSchemeColumnModel = new TimeSchemeColumnModel();
 	}
 	
+	public function index()
+	{
+		$data['schemes'] = $this->schemeModel->getAll();
+		
+		return view('pages/schedule/default', $data);
+	}
+	
 	public function create()
 	{
 		if ($this->request->getMethod() == 'post') {
@@ -72,6 +79,6 @@ class Schedule extends BaseController
 			die('Saved succesfully');
 		}
 		
-		return view('pages/schedule_create');
+		return view('pages/schedule/create');
 	}
 }
