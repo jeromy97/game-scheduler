@@ -16,7 +16,7 @@
     </tr>
     <?php foreach ($timeSchemeRows as $row): ?>
         <tr>
-            <td>wo 2-9-20</td>
+            <td><?= substr(strftime('%a', strtotime($row['date'])), 0, 2) . ' ' . date('j-n-y', strtotime($row['date'])) ?></td>
             <?php foreach ($timeSchemes as $timeScheme): ?>
                 <td width="64" align="right"><?= getTimeSchemeColumn($row['id'], $timeScheme['id'])['timeFrom'] ?></td>
                 <td width="7">-</td>

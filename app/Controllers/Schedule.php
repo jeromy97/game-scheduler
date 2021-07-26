@@ -103,6 +103,8 @@ class Schedule extends BaseController
 			case 'html':
 				$data['timeSchemes'] = $this->timeSchemeModel->getTimeSchemes($schemeId);
 				$data['timeSchemeRows'] = $this->timeSchemeRowModel->getTimeSchemeRows($schemeId);
+
+				setlocale(LC_TIME, ['nl_NL', 'nld_nld']);
 				
 				$export = view('exports/schedule/html', $data);
 				
