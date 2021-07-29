@@ -83,6 +83,32 @@ class Schedule extends BaseController
 		
 		return view('pages/schedule/create');
 	}
+
+	public function edit()
+	{
+		$schemeId = $this->request->uri->getSegment(3);
+
+		$scheme = $this->schemeModel->getScheme($schemeId);
+
+		if ($scheme == null) {
+			die('Error: This scheme does not exist.');
+		}
+
+		$timeSchemes = $this->timeSchemeModel->getTimeSchemes($schemeId);
+		$timeSchemeRows = $this->timeSchemeRowModel->getTimeSchemeRows($schemeId);
+
+		foreach ($timeSchemeRows as $timeSchemeRowKey => $timeSchemeRow) {
+			foreach ($timeSchemes as $timeSchemeKey => $timeScheme) {
+				$timeSchemeRows[$timeSchemeRowKey]['timeSchemeColumns'][$timeScheme['id']] = $this->timeSchemeColumnModel->getTimeSchemeRows($timeSchemeRow['id'], $timeScheme['id']);
+			}
+		}
+
+		$data['scheme'] = $scheme;
+		$data['timeSchemes'] = $timeSchemes;
+		$data['timeSchemeRows'] = $timeSchemeRows;
+
+		return view('pages/schedule/edit', $data);
+	}
 	
 	public function export()
 	{

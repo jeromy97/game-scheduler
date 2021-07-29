@@ -24,7 +24,19 @@ include APPPATH . 'Views/header.php';
 				<td><?= date('Y-m-d', strtotime($scheme['createdAt'])) ?></td>
 				<td class="text-right">
 					<div class="btn-group" role="group" aria-label="actions">
-						<a href="<?= site_url("schedule/export/{$scheme['id']}/html") ?>" class="btn btn-sm btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Export as HTML"><i class="fas fa-code"></i></a>
+						<a
+							href="<?= site_url("schedule/edit/{$scheme['id']}") ?>"
+							class="btn btn-sm btn-outline-primary"
+							data-toggle="tooltip"
+							data-placement="bottom"
+							title="Edit"><i class="fas fa-pencil-alt"></i></a>
+						<a
+							href="<?= site_url("schedule/export/{$scheme['id']}/html") ?>"
+							class="btn btn-sm btn-outline-primary"
+							data-toggle="tooltip"
+							data-placement="bottom"
+							title="Export as HTML"
+							><i class="fas fa-code"></i></a>
 					</div>
 				</td>
 			</tr>
