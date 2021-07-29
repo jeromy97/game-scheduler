@@ -111,6 +111,7 @@ class Schedule extends BaseController
 				unset($data);
 				
 				$data['export'] = $export;
+				$data['scheme'] = $scheme;
 				
 				return view('pages/schedule/export', $data);
 				
