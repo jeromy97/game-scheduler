@@ -53,7 +53,7 @@ include APPPATH . 'Views/header.php';
 						<button type="button" class="btn btn-danger" onclick="deleteTimeSchemeRow(1)">
 							<i class="fas fa-times"></i>
 						</button>
-						<input type="hidden" name="timeSchemeNum[]" value="1">
+						<input type="hidden" name="time_scheme_num[]" value="1">
 					</td>
 				</tr>
 			</tbody>
@@ -116,7 +116,7 @@ include APPPATH . 'Views/header.php';
 		html += '<button type="button" class="btn btn-danger" onclick="deleteTimeSchemeRow(' + rowNumTC + ')">';
 		html += '<i class="fas fa-times"></i>';
 		html += '</button>';
-		html += '<input type="hidden" name="timeSchemeNum[]" value="' + rowNumTC + '">';
+		html += '<input type="hidden" name="time_scheme_num[]" value="' + rowNumTC + '">';
 		html += '</td>';
 		html += '</tr>';
 		
@@ -145,7 +145,7 @@ include APPPATH . 'Views/header.php';
 			html_scheme += '<th>#</th>';
 			html_scheme += '<th>Date <small>*</small></th>';
 			timeColumnRows.each(function(index){
-				var rowNum = $(this).find('input[name="timeSchemeNum[]"]').val();
+				var rowNum = $(this).find('input[name="time_scheme_num[]"]').val();
 				var colName = $(this).find('input#name_col_' + rowNum).val();
 				
 				html_scheme += '<th>' + colName + '</th>';
@@ -193,7 +193,7 @@ include APPPATH . 'Views/header.php';
 		html_scheme += '<td>' + rowNumS + '</td>';
 		html_scheme += '<td><div class="form-group"><input class="form-control form-control-sm" type="date" name="date' + rowNumS + '" value="' + dateFormatted + '" required></div></td>';
 		timeColumnRows.each(function(index){
-			var rowNumberColumnScheme = $(this).find('input[name="timeSchemeNum[]"]').val();
+			var rowNumberColumnScheme = $(this).find('input[name="time_scheme_num[]"]').val();
 			var colTimeFrom = $(this).find('input#time_from_col_' + rowNumberColumnScheme).val();
 			var colTimeTo = $(this).find('input#time_to_col_' + rowNumberColumnScheme).val();
 			

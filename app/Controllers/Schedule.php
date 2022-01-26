@@ -44,12 +44,12 @@ class Schedule extends BaseController
 			$this->schemeModel->save($data);
 			$schemeId = $this->schemeModel->insertID();
 			
-			foreach ($_POST['timeSchemeNum'] as $num) {
+			foreach ($_POST['time_scheme_num'] as $num) {
 				$data = [
 					'schemeId' => $schemeId,
-					'name' => $_POST['name_col_' . $num],
-					'timeFrom' => $_POST['time_from_col_' . $num],
-					'timeTo' => $_POST['time_to_col_' . $num]
+					'name' => $_POST["name_col_$num"],
+					'timeFrom' => $_POST["time_from_col_$num"],
+					'timeTo' => $_POST["time_to_col_$num"]
 				];
 				
 				$this->timeSchemeModel->save($data);
@@ -59,19 +59,19 @@ class Schedule extends BaseController
 			foreach ($_POST['rows'] as $row) {
 				$data = [
 					'schemeId' => $schemeId,
-					'date' => $_POST['date' . $row],
-					'note' => $_POST['note' . $row]
+					'date' => $_POST["date$row"],
+					'note' => $_POST["note$row"]
 				];
 				
 				$this->timeSchemeRowModel->save($data);
 				$timeSchemeRowId = $this->timeSchemeRowModel->insertID();
 				
-				foreach ($_POST['timeSchemeNum'] as $num) {
+				foreach ($_POST['time_scheme_num'] as $num) {
 					$data = [
 						'rowId' => $timeSchemeRowId,
 						'timeSchemeId' => $timeSchemeIds[$num],
-						'timeFrom' => $_POST['time_from' . $row . '_' . $num],
-						'timeTo' => $_POST['time_to' . $row . '_' . $num]
+						'timeFrom' => $_POST["time_from{$row}_{$num}"],
+						'timeTo' => $_POST["time_to{$row}_{$num}"]
 					];
 					
 					$this->timeSchemeColumnModel->save($data);
@@ -87,18 +87,80 @@ class Schedule extends BaseController
 	public function edit()
 	{
 		$schemeId = $this->request->uri->getSegment(3);
-
 		$scheme = $this->schemeModel->getScheme($schemeId);
-
 		if ($scheme == null) {
 			die('Error: This scheme does not exist.');
+		}
+		
+		if ($this->request->getMethod() == 'post') {
+
+			// Update scheme
+			
+			$data = [
+				'id' => $schemeId,
+				'name' => $_POST['scheme_name'],
+				'dateFrom' => $_POST['from_date'],
+				'dateTo' => $_POST['to_date']
+			];
+			
+			$this->schemeModel->save($data);
+
+			// Update time schemes
+			
+			$timeSchemeIds = [];
+			$timeSchemeRowIds = [];
+			$timeSchemeColumnIds = [];
+
+			foreach ($_POST['time_scheme_num'] as $num) {
+				$data = [
+					'name' => $_POST["name_col_$num"],
+					'timeFrom' => $_POST["time_from_col_$num"],
+					'timeTo' => $_POST["time_to_col_$num"]
+				];
+				if (isset($_POST["time_scheme_id_$num"])) $data['id'] = $_POST["time_scheme_id_$num"];
+				
+				$this->timeSchemeModel->save($data);
+				$timeSchemeIds[$num] = isset($_POST["time_scheme_id_$num"]) ? $_POST["time_scheme_id_$num"] : $this->timeSchemeModel->insertID();
+			}
+
+			// Update time scheme rows
+
+			foreach ($_POST['rows'] as $row) {
+				$data = [
+					'date' => $_POST['date' . $row],
+					'note' => $_POST['note' . $row]
+				];
+				if (isset($_POST["time_scheme_row_id_$row"])) $data['id'] = $_POST["time_scheme_row_id_$row"];
+				
+				$this->timeSchemeRowModel->save($data);
+				$timeSchemeRowId = isset($_POST["time_scheme_row_id_$row"]) ? $_POST["time_scheme_row_id_$row"] : $this->timeSchemeRowModel->insertID();
+				$timeSchemeRowIds[] = $timeSchemeRowId;
+				
+				foreach ($_POST['time_scheme_num'] as $num) {
+					$data = [
+						'rowId' => $timeSchemeRowId,
+						'timeSchemeId' => $timeSchemeIds[$num],
+						'timeFrom' => $_POST["time_from{$row}_{$num}"],
+						'timeTo' => $_POST["time_to{$row}_{$num}"]
+					];
+					if (isset($_POST["time_scheme_column_id_{$row}_{$num}"])) $data['id'] = $_POST["time_scheme_column_id_{$row}_{$num}"];
+					
+					$this->timeSchemeColumnModel->save($data);
+					$timeSchemeColumnIds[] = isset($_POST["time_scheme_column_id_{$row}_{$num}"]) ? $_POST["time_scheme_column_id_{$row}_{$num}"] : $this->timeSchemeColumnModel->insertID();
+				}
+			}
+
+			// Remove not posted entities
+			$this->timeSchemeModel->removeFromScheme($timeSchemeIds, $schemeId);
+			$this->timeSchemeRowModel->removeFromScheme($timeSchemeRowIds, $schemeId);
+			$this->timeSchemeColumnModel->removeFromScheme($timeSchemeColumnIds, $schemeId);
 		}
 
 		$timeSchemes = $this->timeSchemeModel->getTimeSchemes($schemeId);
 		$timeSchemeRows = $this->timeSchemeRowModel->getTimeSchemeRows($schemeId);
 
 		foreach ($timeSchemeRows as $timeSchemeRowKey => $timeSchemeRow) {
-			foreach ($timeSchemes as $timeSchemeKey => $timeScheme) {
+			foreach ($timeSchemes as $timeScheme) {
 				$timeSchemeRows[$timeSchemeRowKey]['timeSchemeColumns'][$timeScheme['id']] = $this->timeSchemeColumnModel->getTimeSchemeRows($timeSchemeRow['id'], $timeScheme['id']);
 			}
 		}

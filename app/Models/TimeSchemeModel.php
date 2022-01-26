@@ -13,4 +13,11 @@ class TimeSchemeModel extends Model
 		return $this->where('schemeId', $schemeId)
 			->findAll();
 	}
+	
+	public function removeFromScheme(array $ids, int $schemeId)
+	{
+		$this->whereNotIn('id', $ids)
+			->where('schemeId', $schemeId)
+			->delete();
+	}
 }

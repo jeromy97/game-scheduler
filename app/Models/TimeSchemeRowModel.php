@@ -11,6 +11,14 @@ class TimeSchemeRowModel extends Model
 	public function getTimeSchemeRows($schemeId)
 	{
 		return $this->where('schemeId', $schemeId)
+			->orderBy('id', 'ASC')
 			->findAll();
+	}
+	
+	public function removeFromScheme(array $ids, int $schemeId)
+	{
+		$this->whereNotIn('id', $ids)
+			->where('schemeId', $schemeId)
+			->delete();
 	}
 }

@@ -91,7 +91,8 @@ include APPPATH . 'Views/header.php';
 							<button type="button" class="btn btn-danger" onclick="deleteTimeSchemeRow(<?= $rowNumTC ?>)">
 								<i class="fas fa-times"></i>
 							</button>
-							<input type="hidden" name="timeSchemeNum[]" value="<?= $rowNumTC ?>">
+							<input type="hidden" name="time_scheme_num[]" value="<?= $rowNumTC ?>">
+							<input type="hidden" name="time_scheme_id_<?= $rowNumTC ?>" value="<?= $timeScheme['id'] ?>">
 						</td>
 					</tr>
 				<?php
@@ -180,6 +181,10 @@ include APPPATH . 'Views/header.php';
 											</button>
 										</div>
 									</div>
+									<input
+										type="hidden"
+										name="time_scheme_column_id_<?= $rowNumS ?>_<?= $rowNumberColumnScheme ?>"
+										value="<?= $timeSchemeRow['timeSchemeColumns'][$timeScheme['id']]['id'] ?>">
 								</td>
 							<?php
 								$rowNumberColumnScheme++;
@@ -193,7 +198,7 @@ include APPPATH . 'Views/header.php';
 										value="<?= esc($timeSchemeRow['note']) ?>">
 								</div>
 								<input type="hidden" name="rows[]" value="<?= $rowNumS ?>">
-								<input type="hidden" name="time_scheme_row_ids[]" value="<?= $timeSchemeRow['id'] ?>">
+								<input type="hidden" name="time_scheme_row_id_<?= $rowNumS ?>" value="<?= $timeSchemeRow['id'] ?>">
 							</td>
 							<td>
 								<div class="btn-group" role="group" aria-label="actions">
@@ -253,7 +258,7 @@ include APPPATH . 'Views/header.php';
 		html += '<button type="button" class="btn btn-danger" onclick="deleteTimeSchemeRow(' + rowNumTC + ')">';
 		html += '<i class="fas fa-times"></i>';
 		html += '</button>';
-		html += '<input type="hidden" name="timeSchemeNum[]" value="' + rowNumTC + '">';
+		html += '<input type="hidden" name="time_scheme_num[]" value="' + rowNumTC + '">';
 		html += '</td>';
 		html += '</tr>';
 		
@@ -282,7 +287,7 @@ include APPPATH . 'Views/header.php';
 			html_scheme += '<th>#</th>';
 			html_scheme += '<th>Date <small>*</small></th>';
 			timeColumnRows.each(function(index){
-				var rowNum = $(this).find('input[name="timeSchemeNum[]"]').val();
+				var rowNum = $(this).find('input[name="time_scheme_num[]"]').val();
 				var colName = $(this).find('input#name_col_' + rowNum).val();
 				
 				html_scheme += '<th>' + colName + '</th>';
@@ -330,7 +335,7 @@ include APPPATH . 'Views/header.php';
 		html_scheme += '<td>' + rowNumS + '</td>';
 		html_scheme += '<td><div class="form-group"><input class="form-control form-control-sm" type="date" name="date' + rowNumS + '" value="' + dateFormatted + '" required></div></td>';
 		timeColumnRows.each(function(index){
-			var rowNumberColumnScheme = $(this).find('input[name="timeSchemeNum[]"]').val();
+			var rowNumberColumnScheme = $(this).find('input[name="time_scheme_num[]"]').val();
 			var colTimeFrom = $(this).find('input#time_from_col_' + rowNumberColumnScheme).val();
 			var colTimeTo = $(this).find('input#time_to_col_' + rowNumberColumnScheme).val();
 			
@@ -348,8 +353,6 @@ include APPPATH . 'Views/header.php';
 		html_scheme += '<td><div class="btn-group" role="group" aria-label="actions"><button type="button" class="btn btn-sm btn-danger" onclick="deleteSchemeRow(' + rowNumS + ')"><i class="fas fa-times"></i></button><button type="button" class="btn btn-sm btn-success" onclick="addSchemeRow(' + rowNumS + ')"><i class="fas fa-plus"></i></button></div></td>';
 		html_scheme += '</tr>';
 
-		console.log(html_scheme);
-		
 		var table_rows = $("#scheme table tbody tr");
 		
 		if (table_rows.length == 0) {
