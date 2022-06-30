@@ -11,6 +11,7 @@ class Schedule extends BaseController
 	protected $timeSchemeModel;
 	protected $timeSchemeRowModel;
 	protected $timeSchemeColumnModel;
+	protected $session;
 	
 	public function __construct()
 	{
@@ -18,6 +19,7 @@ class Schedule extends BaseController
 		$this->timeSchemeModel = new TimeSchemeModel();
 		$this->timeSchemeRowModel = new TimeSchemeRowModel();
 		$this->timeSchemeColumnModel = new TimeSchemeColumnModel();
+		$this->session = session();
 	}
 	
 	public function index()
@@ -76,7 +78,11 @@ class Schedule extends BaseController
 				}
 			}
 			
-			die('Saved succesfully');
+			$this->session->setFlashdata([
+				'msg' => 'Saved successfully!',
+				'msgType' => 'success'
+			]);
+			redirect()->to('schedule');
 		}
 		
 		return view('pages/schedule/create');
@@ -87,7 +93,11 @@ class Schedule extends BaseController
 		$schemeId = $this->request->uri->getSegment(3);
 		$scheme = $this->schemeModel->getScheme($schemeId);
 		if ($scheme == null) {
-			die('Error: This scheme does not exist.');
+			$this->session->setFlashdata([
+				'msg' => 'This scheme does not exist.',
+				'msgType' => 'danger'
+			]);
+			redirect()->to('schedule');
 		}
 		
 		if ($this->request->getMethod() == 'post') {
@@ -152,6 +162,12 @@ class Schedule extends BaseController
 			$this->timeSchemeModel->removeFromScheme($timeSchemeIds, $schemeId);
 			$this->timeSchemeRowModel->removeFromScheme($timeSchemeRowIds, $schemeId);
 			$this->timeSchemeColumnModel->removeFromScheme($timeSchemeColumnIds, $schemeId);
+
+			$this->session->setFlashdata([
+				'msg' => 'Saved successfully!',
+				'msgType' => 'success'
+			]);
+			redirect()->to('schedule');
 		}
 
 		$timeSchemes = $this->timeSchemeModel->getTimeSchemes($schemeId);
@@ -178,7 +194,11 @@ class Schedule extends BaseController
 		$scheme = $this->schemeModel->getScheme($schemeId);
 		
 		if ($scheme == null) {
-			die('Error: This scheme does not exist.');
+			$this->session->setFlashdata([
+				'msg' => 'This scheme does not exist.',
+				'msgType' => 'danger'
+			]);
+			redirect()->to('schedule');
 		}
 		
 		if ($exportMethod === '') {
@@ -218,7 +238,11 @@ class Schedule extends BaseController
 				break;
 			
 			default:
-				die('Error: The desired export method does not exist.');
+				$this->session->setFlashdata([
+					'msg' => 'The desired export method does not exist.',
+					'msgType' => 'danger'
+				]);
+				redirect()->to('schedule');
 				break;
 		}
 	}
