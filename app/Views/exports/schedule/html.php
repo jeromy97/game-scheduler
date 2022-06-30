@@ -18,9 +18,9 @@
         <tr>
             <td><?= substr(strftime('%a', strtotime($row['date'])), 0, 2) . ' ' . date('j-n-y', strtotime($row['date'])) ?></td>
             <?php foreach ($timeSchemes as $timeScheme): ?>
-                <td width="64" align="right"><?= date('H:i', strtotime(getTimeSchemeColumn($row['id'], $timeScheme['id'])['timeFrom'])) ?></td>
+                <td width="64" align="right"><?= $timeSchemeColumns[$row['id']][$timeScheme['id']]['timeFrom'] ?></td>
                 <td width="7">-</td>
-                <td width="73"><?= date('H:i', strtotime(getTimeSchemeColumn($row['id'], $timeScheme['id'])['timeTo'])) ?></td>
+                <td width="73"><?= $timeSchemeColumns[$row['id']][$timeScheme['id']]['timeFrom'] ?></td>
             <?php endforeach ?>
             <td><?= esc($row['note']) ?></td>
         </tr>

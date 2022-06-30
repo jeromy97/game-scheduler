@@ -18,8 +18,6 @@ class Schedule extends BaseController
 		$this->timeSchemeModel = new TimeSchemeModel();
 		$this->timeSchemeRowModel = new TimeSchemeRowModel();
 		$this->timeSchemeColumnModel = new TimeSchemeColumnModel();
-		
-		helper('scheme');
 	}
 	
 	public function index()
@@ -189,11 +187,25 @@ class Schedule extends BaseController
 		
 		switch ($exportMethod) {
 			case 'html':
-				$data['timeSchemes'] = $this->timeSchemeModel->getTimeSchemes($schemeId);
-				$data['timeSchemeRows'] = $this->timeSchemeRowModel->getTimeSchemeRows($schemeId);
+				$timeSchemes = $this->timeSchemeModel->getTimeSchemes($schemeId);
+				$timeSchemeRows = $this->timeSchemeRowModel->getTimeSchemeRows($schemeId);
+				$timeSchemeColumns = [];
 
+				// Format column values
 				setlocale(LC_TIME, ['nl_NL', 'nld_nld']);
-				
+				foreach ($timeSchemeRows as $row) {
+					foreach ($timeSchemes as $scheme) {
+						$column = $this->timeSchemeColumnModel->getTimeSchemeColumn($row['id'], $scheme['id']);
+						$column['timeFrom'] = $column['timeFrom'] !== '00:00:00' ? date('H:i', strtotime($column['timeFrom'])) : '';
+						$column['timeTo'] = $column['timeTo'] !== '00:00:00' ? date('H:i', strtotime($column['timeTo'])) : '';
+						$timeSchemeColumns[$row['id']][$scheme['id']] = $column;
+					}
+				}
+
+				$data['timeSchemes'] = $timeSchemes;
+				$data['timeSchemeRows'] = $timeSchemeRows;
+				$data['timeSchemeColumns'] = $timeSchemeColumns;
+
 				$export = view('exports/schedule/html', $data);
 				
 				unset($data);

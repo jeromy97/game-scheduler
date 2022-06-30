@@ -15,6 +15,13 @@ class TimeSchemeColumnModel extends Model
 			->where('timeSchemeId', $timeSchemeId)
 			->first();
 	}
+
+	public function getTimeSchemeColumn($rowId, $timeSchemeId)
+	{
+		return $this->where(['rowId' => $rowId, 'timeSchemeId' => $timeSchemeId])
+			->get()
+			->getRowArray();
+	}
 	
 	public function removeFromScheme(array $ids, int $schemeId)
 	{
