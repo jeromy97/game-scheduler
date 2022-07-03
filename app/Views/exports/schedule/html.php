@@ -20,7 +20,7 @@
             <?php foreach ($timeSchemes as $timeScheme): ?>
                 <td width="64" align="right"><?= $timeSchemeColumns[$row['id']][$timeScheme['id']]['timeFrom'] ?></td>
                 <td width="7">-</td>
-                <td width="73"><?= $timeSchemeColumns[$row['id']][$timeScheme['id']]['timeFrom'] ?></td>
+                <td width="73"><?= $timeSchemeColumns[$row['id']][$timeScheme['id']]['timeTo'] ?></td>
             <?php endforeach ?>
             <td><?= esc($row['note']) ?></td>
         </tr>
