@@ -1,0 +1,8 @@
+.export .example{
+    height: 600px;
+    overflow: auto;
+}
+
+.export .example table.speelschema-tabel{
+    width: 100%;
+}

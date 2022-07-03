@@ -16,9 +16,8 @@
 	
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>\assets\fontawesome-free-5.12.1-web\css\all.min.css">
+	<link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 	
-	<script type="text/javascript" src="<?= base_url('assets/js/site.js') ?>"></script>
-
 	<title><?= esc(TITLE) ?> - Game Scheme Generator</title>
 	
 </head>
