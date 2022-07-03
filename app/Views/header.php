@@ -30,6 +30,8 @@
 		</div>
 	</nav>
 	
-	<div class="container">
+	<div class="container my-3">
 		
-		<h1><?= esc(TITLE) ?></h1>
+		<div class="card">
+			<h5 class="card-header"><?= esc(TITLE) ?></h5>
+			<div class="card-body">
