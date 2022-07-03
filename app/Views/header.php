@@ -23,6 +23,12 @@
 	
 </head>
 <body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container">
+			<a class="navbar-brand" href="<?= site_url() ?>">Games Scheduler</a>
+		</div>
+	</nav>
 	
 	<div class="container">
 		
