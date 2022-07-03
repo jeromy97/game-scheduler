@@ -78,8 +78,10 @@ class Schedule extends BaseController
 			
 			die('Saved succesfully');
 		}
+
+		$data['schemeNames'] = $this->schemeModel->getAllSchemeNames();
 		
-		return view('pages/schedule/create');
+		return view('pages/schedule/create', $data);
 	}
 
 	public function edit()
@@ -166,6 +168,7 @@ class Schedule extends BaseController
 		$data['scheme'] = $scheme;
 		$data['timeSchemes'] = $timeSchemes;
 		$data['timeSchemeRows'] = $timeSchemeRows;
+		$data['schemeNames'] = $this->schemeModel->getAllSchemeNames();
 
 		return view('pages/schedule/edit', $data);
 	}

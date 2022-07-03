@@ -19,4 +19,11 @@ class SchemeModel extends Model
 		return $this->where('id', $schemeId)
 			->first();
 	}
+
+	public function getAllSchemeNames()
+	{
+		return $this->select('name')
+			->orderBy('createdAt', 'desc')
+			->findAll();
+	}
 }

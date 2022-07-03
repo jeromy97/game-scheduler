@@ -12,7 +12,13 @@ include APPPATH . 'Views/header.php';
 				class="form-control"
 				id="scheme_name"
 				name="scheme_name"
-				value="<?= esc($scheme['name']) ?>">
+				value="<?= esc($scheme['name']) ?>"
+				list="schemeNames">
+				<datalist id="schemeNames">
+				<?php foreach($schemeNames as $schemeName): ?>
+					<option value="<?= esc($schemeName['name']) ?>"></option>
+				<?php endforeach; ?>
+			</datalist>
 		</div>
 	</div>
 	<div class="form-row">
