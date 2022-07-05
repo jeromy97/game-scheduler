@@ -82,7 +82,8 @@ class Schedule extends BaseController
 				'msg' => 'Saved successfully!',
 				'msgType' => 'success'
 			]);
-			redirect()->to('schedule');
+			header('Location:' . site_url('schedule'));
+			exit;
 		}
 
 		$data['schemeNames'] = $this->schemeModel->getAllSchemeNames();
@@ -99,7 +100,8 @@ class Schedule extends BaseController
 				'msg' => 'This scheme does not exist.',
 				'msgType' => 'danger'
 			]);
-			redirect()->to('schedule');
+			header('Location:' . site_url('schedule'));
+			exit;
 		}
 		
 		if ($this->request->getMethod() == 'post') {
@@ -169,7 +171,8 @@ class Schedule extends BaseController
 				'msg' => 'Saved successfully!',
 				'msgType' => 'success'
 			]);
-			redirect()->to('schedule');
+			header('Location:' . site_url('schedule'));
+			exit;
 		}
 
 		$timeSchemes = $this->timeSchemeModel->getTimeSchemes($schemeId);
@@ -201,7 +204,8 @@ class Schedule extends BaseController
 				'msg' => 'This scheme does not exist.',
 				'msgType' => 'danger'
 			]);
-			redirect()->to('schedule');
+			header('Location:' . site_url('schedule'));
+			exit;
 		}
 		
 		if ($exportMethod === '') {
@@ -245,7 +249,8 @@ class Schedule extends BaseController
 					'msg' => 'The desired export method does not exist.',
 					'msgType' => 'danger'
 				]);
-				redirect()->to('schedule');
+				header('Location:' . site_url('schedule'));
+				exit;
 				break;
 		}
 	}
