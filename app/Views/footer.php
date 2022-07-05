@@ -26,8 +26,7 @@
             </div>
 
             <script>
-                var toast = new bootstrap.Toast($('#liveToast'));
-                toast.show();
+                $('#liveToast').toast('show');
             </script>
         <?php endif; ?>
 
