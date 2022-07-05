@@ -16,14 +16,21 @@
 	
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>\assets\fontawesome-free-5.12.1-web\css\all.min.css">
+	<link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 	
-	<script type="text/javascript" src="<?= base_url('assets/js/site.js') ?>"></script>
-
 	<title><?= esc(TITLE) ?> - Game Scheme Generator</title>
 	
 </head>
 <body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container">
+			<a class="navbar-brand" href="<?= site_url() ?>">Games Scheduler</a>
+		</div>
+	</nav>
 	
-	<div class="container">
+	<div class="container my-3">
 		
-		<h1><?= esc(TITLE) ?></h1>
+		<div class="card">
+			<h5 class="card-header"><?= esc(TITLE) ?></h5>
+			<div class="card-body">

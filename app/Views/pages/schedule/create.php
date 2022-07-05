@@ -7,7 +7,12 @@ include APPPATH . 'Views/header.php';
 	<div class="form-row">
 		<div class="form-group col-md-6">
 			<label for="scheme_name">Scheme name:</label>
-			<input type="text" class="form-control" id="scheme_name" name="scheme_name">
+			<input type="text" class="form-control" id="scheme_name" name="scheme_name" list="schemeNames">
+			<datalist id="schemeNames">
+				<?php foreach($schemeNames as $schemeName): ?>
+					<option value="<?= esc($schemeName['name']) ?>"></option>
+				<?php endforeach; ?>
+			</datalist>
 		</div>
 	</div>
 	<div class="form-row">

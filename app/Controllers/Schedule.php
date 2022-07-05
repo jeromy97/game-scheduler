@@ -84,8 +84,10 @@ class Schedule extends BaseController
 			]);
 			redirect()->to('schedule');
 		}
+
+		$data['schemeNames'] = $this->schemeModel->getAllSchemeNames();
 		
-		return view('pages/schedule/create');
+		return view('pages/schedule/create', $data);
 	}
 
 	public function edit()
@@ -182,6 +184,7 @@ class Schedule extends BaseController
 		$data['scheme'] = $scheme;
 		$data['timeSchemes'] = $timeSchemes;
 		$data['timeSchemeRows'] = $timeSchemeRows;
+		$data['schemeNames'] = $this->schemeModel->getAllSchemeNames();
 
 		return view('pages/schedule/edit', $data);
 	}
@@ -214,11 +217,11 @@ class Schedule extends BaseController
 				// Format column values
 				setlocale(LC_TIME, ['nl_NL', 'nld_nld']);
 				foreach ($timeSchemeRows as $row) {
-					foreach ($timeSchemes as $scheme) {
-						$column = $this->timeSchemeColumnModel->getTimeSchemeColumn($row['id'], $scheme['id']);
+					foreach ($timeSchemes as $timeScheme) {
+						$column = $this->timeSchemeColumnModel->getTimeSchemeColumn($row['id'], $timeScheme['id']);
 						$column['timeFrom'] = $column['timeFrom'] !== '00:00:00' ? date('H:i', strtotime($column['timeFrom'])) : '';
 						$column['timeTo'] = $column['timeTo'] !== '00:00:00' ? date('H:i', strtotime($column['timeTo'])) : '';
-						$timeSchemeColumns[$row['id']][$scheme['id']] = $column;
+						$timeSchemeColumns[$row['id']][$timeScheme['id']] = $column;
 					}
 				}
 
