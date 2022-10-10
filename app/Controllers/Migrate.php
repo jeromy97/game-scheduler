@@ -15,6 +15,8 @@ class Migrate extends \CodeIgniter\Controller
 		{
 			echo $e->getMessage();
 		}
+
+		echo 'Successfully migrated';
 	}
 
 }
